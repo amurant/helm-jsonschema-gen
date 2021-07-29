@@ -17,8 +17,6 @@ cainjector:
   serviceAccount:
     automountServiceAccountToken: true
     create: true
-  strategy:
-    rollingUpdate: {}
   tolerations: []
 clusterResourceNamespace: ""
 containerSecurityContext: {}
@@ -60,8 +58,6 @@ securityContext:
 serviceAccount:
   automountServiceAccountToken: true
   create: true
-strategy:
-  rollingUpdate: {}
 tolerations: []
 volumeMounts: []
 volumes: []
@@ -97,8 +93,6 @@ webhook:
     automountServiceAccountToken: true
     create: true
   serviceType: ClusterIP
-  strategy:
-    rollingUpdate: {}
   timeoutSeconds: 10
   tolerations: []
   url: {}

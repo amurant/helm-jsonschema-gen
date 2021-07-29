@@ -4,7 +4,6 @@
     "installCRDs",
     "replicaCount",
     "podLabels",
-    "strategy",
     "nodeSelector",
     "affinity",
     "tolerations",
@@ -207,7 +206,6 @@
         "enabled",
         "replicaCount",
         "podLabels",
-        "strategy",
         "nodeSelector",
         "affinity",
         "tolerations",
@@ -633,7 +631,6 @@
       "required": [
         "replicaCount",
         "podLabels",
-        "strategy",
         "nodeSelector",
         "affinity",
         "tolerations",

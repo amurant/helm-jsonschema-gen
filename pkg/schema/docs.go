@@ -59,7 +59,14 @@ func extractDocs(path string, t *jsonschema.Type, val interface{}, required bool
 			v, _ := t.Properties.Get(k)
 
 			p := strings.TrimPrefix(path+".", ".")
-			fieldDocs := extractDocs(p+k, v.(*jsonschema.Type), val.(map[string]interface{})[k], stringInSlice(k, t.Required))
+
+			var fieldDocs []generatedDocItem
+			switch val.(type) {
+			case map[string]interface{}:
+				fieldDocs = extractDocs(p+k, v.(*jsonschema.Type), val.(map[string]interface{})[k], stringInSlice(k, t.Required))
+			default:
+				fieldDocs = extractDocs(p+k, v.(*jsonschema.Type), nil, stringInSlice(k, t.Required))
+			}
 			genDocs = append(genDocs, fieldDocs...)
 		}
 	} else {

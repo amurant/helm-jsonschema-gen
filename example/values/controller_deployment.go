@@ -12,7 +12,7 @@ type ControllerDeployment struct {
 	// Annotations to add to the pods
 	PodLabels map[string]string `json:"podLabels"`
 
-	Strategy DeploymentStrategy `json:"strategy"`
+	Strategy *DeploymentStrategy `json:"strategy,omitempty"`
 
 	// Node labels for pod assignment
 	NodeSelector map[string]string `json:"nodeSelector"`

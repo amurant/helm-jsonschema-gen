@@ -2,7 +2,7 @@ module main
 
 go 1.16
 
-require github.com/amurant/helm-jsonschema-gen v0.0.0-20210729124805-36ac7569c1ed
+require github.com/amurant/helm-jsonschema-gen v0.0.0-20210729125653-fe55e2d81d83
 
 replace github.com/amurant/helm-jsonschema-gen => ../../
 

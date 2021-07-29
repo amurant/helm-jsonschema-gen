@@ -37,7 +37,6 @@ var defaultValues = Values{
 	InstallCRDs: false,
 	ControllerDeployment: ControllerDeployment{
 		ReplicaCount: 1,
-		Strategy:     DeploymentStrategy{},
 		NodeSelector: map[string]string{},
 		Affinity:     map[string]interface{}{},
 		Tolerations:  []string{},
@@ -61,7 +60,6 @@ var defaultValues = Values{
 		Enabled: true,
 		ControllerDeployment: ControllerDeployment{
 			ReplicaCount: 1,
-			Strategy:     DeploymentStrategy{},
 			NodeSelector: map[string]string{},
 			Affinity:     map[string]interface{}{},
 			Tolerations:  []string{},
@@ -96,7 +94,6 @@ var defaultValues = Values{
 	Webhook: Webhook{
 		ControllerDeployment: ControllerDeployment{
 			ReplicaCount: 1,
-			Strategy:     DeploymentStrategy{},
 			NodeSelector: map[string]string{},
 			Affinity:     map[string]interface{}{},
 			Tolerations:  []string{},
