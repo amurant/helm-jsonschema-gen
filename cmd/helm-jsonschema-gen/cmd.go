@@ -7,7 +7,8 @@ import (
 )
 
 type Options struct {
-	Path string
+	Path   string
+	Header string
 }
 
 func NewCmdJsonSchemaGen() *cobra.Command {
@@ -25,6 +26,7 @@ func NewCmdJsonSchemaGen() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&options.Path, "path", "p", "", "Path of go module")
+	cmd.Flags().StringVarP(&options.Header, "header", "t", "", "Path of header boilerplate file")
 
 	return cmd
 }
@@ -35,7 +37,7 @@ func (o *Options) Run() error {
 		return err
 	}
 
-	gen.GenComments(o.Path, pkgName, pkg)
+	gen.GenComments(o.Path, o.Header, pkgName, pkg)
 
 	return nil
 }

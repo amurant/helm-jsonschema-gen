@@ -1,3 +1,6 @@
+/*
+Header boilerplate comment
+*/
 /* DO NOT EDIT, this file was auto-generated */
 
 package main

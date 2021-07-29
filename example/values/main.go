@@ -4,7 +4,7 @@ import (
 	"github.com/amurant/helm-jsonschema-gen/pkg/schema"
 )
 
-//go:generate go run github.com/amurant/helm-jsonschema-gen/cmd/helm-jsonschema-gen -p .
+//go:generate go run github.com/amurant/helm-jsonschema-gen/cmd/helm-jsonschema-gen -p . -t boilerplate.txt
 
 func main() {
 	if err := schema.GenSchema(&defaultValues, "../values.schema.json"); err != nil {

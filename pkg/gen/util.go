@@ -3,11 +3,12 @@ package gen
 import (
 	"bytes"
 	"go/format"
+	"io"
 	"os"
 	"text/template"
 )
 
-func teplateAndWriteToFile(templateString string, values interface{}, path string) error {
+func teplateAndWriteToFile(templateString string, values interface{}, path string, headerPath string) error {
 	tmpl, err := template.New("render").Parse(templateString)
 	if err != nil {
 		return err
@@ -22,6 +23,14 @@ func teplateAndWriteToFile(templateString string, values interface{}, path strin
 		return err
 	}
 
+	fh, err := os.Open(headerPath)
+
+	if err != nil {
+		return err
+	}
+
+	defer fh.Close()
+
 	f, err := os.Create(path)
 
 	if err != nil {
@@ -29,6 +38,10 @@ func teplateAndWriteToFile(templateString string, values interface{}, path strin
 	}
 
 	defer f.Close()
+
+	if _, err = io.Copy(f, fh); err != nil {
+		return err
+	}
 
 	_, err = f.Write(p)
 

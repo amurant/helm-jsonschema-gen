@@ -13,7 +13,7 @@ type TemplateCommentValues struct {
 	Values      map[string]map[string]string
 }
 
-func GenComments(rootPath string, pkgName string, pkg *ast.Package) error {
+func GenComments(rootPath string, headerPath string, pkgName string, pkg *ast.Package) error {
 	p := doc.New(pkg, "", doc.PreserveAST)
 
 	docs := map[string]map[string]string{}
@@ -47,7 +47,7 @@ func GenComments(rootPath string, pkgName string, pkg *ast.Package) error {
 		docs,
 	}
 
-	return teplateAndWriteToFile(goTemplate, v, path.Join(rootPath, "comments_generated.go"))
+	return teplateAndWriteToFile(goTemplate, v, path.Join(rootPath, "comments_generated.go"), headerPath)
 }
 
 const goTemplate = `
