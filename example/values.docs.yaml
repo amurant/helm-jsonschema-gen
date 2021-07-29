@@ -1,0 +1,716 @@
+- default: false
+  description: |-
+    If true, CRD resources will be installed as part of the Helm chart.
+    If enabled, when uninstalling CRD resources will be deleted causing all
+    installed custom resources to be DELETED.
+  path: installCRDs
+  required: true
+  type: boolean
+- default: 1
+  description: Number of replicas
+  path: replicaCount
+  required: true
+  type: integer
+- description: Annotations to add to the deployment
+  path: deploymentAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: podAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: podLabels
+  required: true
+  type: map[string]string
+- description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is
+    RollingUpdate.
+  path: strategy.type
+  required: false
+  type: string
+- description: |-
+    The maximum number of pods that can be unavailable during the update.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    Absolute number is calculated from percentage by rounding down.
+    This can not be 0 if MaxSurge is 0.
+    Defaults to 25%.
+    Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods
+    immediately when the rolling update starts. Once new pods are ready, old ReplicaSet
+    can be scaled down further, followed by scaling up the new ReplicaSet, ensuring
+    that the total number of pods available at all times during the update is at
+    least 70% of desired pods.
+  path: strategy.rollingUpdate.maxUnavailable
+  required: false
+  type: object
+- description: |-
+    The maximum number of pods that can be scheduled above the desired number of
+    pods.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    This can not be 0 if MaxUnavailable is 0.
+    Absolute number is calculated from percentage by rounding up.
+    Defaults to 25%.
+    Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when
+    the rolling update starts, such that the total number of old and new pods do not exceed
+    130% of desired pods. Once old pods have been killed,
+    new ReplicaSet can be scaled up further, ensuring that total number of pods running
+    at any time during the update is at most 130% of desired pods.
+  path: strategy.rollingUpdate.maxSurge
+  required: false
+  type: object
+- default: {}
+  description: Node labels for pod assignment
+  path: nodeSelector
+  required: true
+  type: map[string]string
+- default: {}
+  description: Node affinity for pod assignment
+  path: affinity
+  required: true
+  type: object
+- default: []
+  description: Node tolerations for pod assignment
+  path: tolerations
+  required: true
+  type: '[]string'
+- default: quay.io/jetstack/cert-manager-controller
+  description: Image repository
+  path: image.repository
+  required: true
+  type: string
+- description: |-
+    You can manage a registry with
+    Example:
+     registry: quay.io
+     repository: jetstack/cert-manager-controller
+  path: image.registry
+  required: false
+  type: string
+- description: |-
+    Override the image tag to deploy by setting this variable.
+    If no value is set, the chart's appVersion will be used.
+  path: image.tag
+  required: false
+  type: string
+- description: Setting a digest will override any tag
+  path: image.digest
+  required: false
+  type: string
+- default: IfNotPresent
+  description: Image pull policy
+  path: image.pullPolicy
+  required: false
+  type: string
+- default: {}
+  description: CPU/memory resource requests/limits for the pods
+  path: resources
+  required: true
+  type: object
+- default: []
+  description: Optional additional arguments for controller
+  path: extraArgs
+  required: true
+  type: '[]string'
+- default: []
+  description: Optional additional environment variables for controller
+  path: extraEnv
+  required: true
+  type: '[]object'
+- default: true
+  description: If `true`, create a new service account for the cert-manager controller
+  path: serviceAccount.create
+  required: true
+  type: boolean
+- description: |-
+    The name of the service account for the cert-manager controller to be used.
+    If not set and `serviceAccount.create` is `true`, a name is generated using
+    the fullname template
+  path: serviceAccount.name
+  required: false
+  type: string
+- description: Annotations to add to the service account for the cert-manager controller
+  path: serviceAccount.annotations
+  required: false
+  type: map[string]string
+- default: true
+  description: Automount API credentials for the cert-manager service account
+  path: serviceAccount.automountServiceAccountToken
+  required: true
+  type: boolean
+- default:
+    runAsNonRoot: true
+  description: |-
+    Pod Security Context
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: securityContext
+  required: true
+  type: object
+- default: {}
+  description: |-
+    Container Security Context to be set on the controller component container
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: containerSecurityContext
+  required: true
+  type: object
+- default: []
+  path: global.imagePullSecrets
+  required: true
+  type: '[]object'
+- default: kube-system
+  description: Override the namespace used to store the ConfigMap for leader election
+  path: global.leaderElection.namespace
+  required: true
+  type: string
+- description: |-
+    The duration that non-leader candidates will wait after observing a
+    leadership renewal until attempting to acquire leadership of a led but
+    unrenewed leader slot. This is effectively the maximum duration that a
+    leader can be stopped before it is replaced by another candidate.
+  path: global.leaderElection.leaseDuration
+  required: false
+  type: string
+- description: |-
+    The interval between attempts by the acting master to renew a leadership
+    slot before it stops leading. This must be less than or equal to the
+    lease duration.
+  path: global.leaderElection.renewDeadline
+  required: false
+  type: string
+- description: |-
+    The duration the clients should wait between attempting acquisition and
+    renewal of a leadership.
+  path: global.leaderElection.retryPeriod
+  required: false
+  type: string
+- default: 2
+  path: global.logLevel
+  required: true
+  type: integer
+- default: false
+  description: If `true`, create and use PodSecurityPolicy
+  path: global.podSecurityPolicy.enabled
+  required: true
+  type: boolean
+- default: true
+  description: If `true`, use Apparmor seccomp profile in PSP
+  path: global.podSecurityPolicy.useAppArmor
+  required: true
+  type: boolean
+- default: ""
+  path: global.priorityClassName
+  required: true
+  type: string
+- default: true
+  path: global.rbac.create
+  required: true
+  type: boolean
+- default: true
+  path: cainjector.enabled
+  required: true
+  type: boolean
+- default: 1
+  description: Number of replicas
+  path: cainjector.replicaCount
+  required: true
+  type: integer
+- description: Annotations to add to the deployment
+  path: cainjector.deploymentAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: cainjector.podAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: cainjector.podLabels
+  required: true
+  type: map[string]string
+- description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is
+    RollingUpdate.
+  path: cainjector.strategy.type
+  required: false
+  type: string
+- description: |-
+    The maximum number of pods that can be unavailable during the update.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    Absolute number is calculated from percentage by rounding down.
+    This can not be 0 if MaxSurge is 0.
+    Defaults to 25%.
+    Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods
+    immediately when the rolling update starts. Once new pods are ready, old ReplicaSet
+    can be scaled down further, followed by scaling up the new ReplicaSet, ensuring
+    that the total number of pods available at all times during the update is at
+    least 70% of desired pods.
+  path: cainjector.strategy.rollingUpdate.maxUnavailable
+  required: false
+  type: object
+- description: |-
+    The maximum number of pods that can be scheduled above the desired number of
+    pods.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    This can not be 0 if MaxUnavailable is 0.
+    Absolute number is calculated from percentage by rounding up.
+    Defaults to 25%.
+    Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when
+    the rolling update starts, such that the total number of old and new pods do not exceed
+    130% of desired pods. Once old pods have been killed,
+    new ReplicaSet can be scaled up further, ensuring that total number of pods running
+    at any time during the update is at most 130% of desired pods.
+  path: cainjector.strategy.rollingUpdate.maxSurge
+  required: false
+  type: object
+- default: {}
+  description: Node labels for pod assignment
+  path: cainjector.nodeSelector
+  required: true
+  type: map[string]string
+- default: {}
+  description: Node affinity for pod assignment
+  path: cainjector.affinity
+  required: true
+  type: object
+- default: []
+  description: Node tolerations for pod assignment
+  path: cainjector.tolerations
+  required: true
+  type: '[]string'
+- default: quay.io/jetstack/cert-manager-cainjector
+  description: Image repository
+  path: cainjector.image.repository
+  required: true
+  type: string
+- description: |-
+    You can manage a registry with
+    Example:
+     registry: quay.io
+     repository: jetstack/cert-manager-controller
+  path: cainjector.image.registry
+  required: false
+  type: string
+- description: |-
+    Override the image tag to deploy by setting this variable.
+    If no value is set, the chart's appVersion will be used.
+  path: cainjector.image.tag
+  required: false
+  type: string
+- description: Setting a digest will override any tag
+  path: cainjector.image.digest
+  required: false
+  type: string
+- default: IfNotPresent
+  description: Image pull policy
+  path: cainjector.image.pullPolicy
+  required: false
+  type: string
+- default: {}
+  description: CPU/memory resource requests/limits for the pods
+  path: cainjector.resources
+  required: true
+  type: object
+- default: []
+  description: Optional additional arguments for controller
+  path: cainjector.extraArgs
+  required: true
+  type: '[]string'
+- default: []
+  description: Optional additional environment variables for controller
+  path: cainjector.extraEnv
+  required: true
+  type: '[]object'
+- default: true
+  description: If `true`, create a new service account for the cert-manager controller
+  path: cainjector.serviceAccount.create
+  required: true
+  type: boolean
+- description: |-
+    The name of the service account for the cert-manager controller to be used.
+    If not set and `serviceAccount.create` is `true`, a name is generated using
+    the fullname template
+  path: cainjector.serviceAccount.name
+  required: false
+  type: string
+- description: Annotations to add to the service account for the cert-manager controller
+  path: cainjector.serviceAccount.annotations
+  required: false
+  type: map[string]string
+- default: true
+  description: Automount API credentials for the cert-manager service account
+  path: cainjector.serviceAccount.automountServiceAccountToken
+  required: true
+  type: boolean
+- default:
+    runAsNonRoot: true
+  description: |-
+    Pod Security Context
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: cainjector.securityContext
+  required: true
+  type: object
+- default: {}
+  description: |-
+    Container Security Context to be set on the controller component container
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: cainjector.containerSecurityContext
+  required: true
+  type: object
+- default: false
+  description: If `true`, enable Prometheus monitoring
+  path: prometheus.enabled
+  required: true
+  type: boolean
+- default: false
+  description: Enable Prometheus Operator ServiceMonitor monitoring
+  path: prometheus.servicemonitor.enabled
+  required: true
+  type: boolean
+- default: default
+  description: Prometheus Instance definition
+  path: prometheus.servicemonitor.prometheusInstance
+  required: true
+  type: string
+- default: 9402
+  description: Prometheus scrape port
+  path: prometheus.servicemonitor.targetPort
+  required: true
+  type: integer
+- default: /metrics
+  description: Prometheus scrape path
+  path: prometheus.servicemonitor.path
+  required: true
+  type: string
+- default: 60s
+  description: Prometheus scrape interval
+  path: prometheus.servicemonitor.interval
+  required: true
+  type: string
+- default: 30s
+  description: Prometheus scrape timeout
+  path: prometheus.servicemonitor.scrapeTimeout
+  required: true
+  type: string
+- default: {}
+  description: Add custom labels to ServiceMonitor
+  path: prometheus.servicemonitor.labels
+  required: true
+  type: map[string]string
+- default: 1
+  description: Number of replicas
+  path: webhook.replicaCount
+  required: true
+  type: integer
+- description: Annotations to add to the deployment
+  path: webhook.deploymentAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: webhook.podAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the pods
+  path: webhook.podLabels
+  required: true
+  type: map[string]string
+- description: Type of deployment. Can be "Recreate" or "RollingUpdate". Default is
+    RollingUpdate.
+  path: webhook.strategy.type
+  required: false
+  type: string
+- description: |-
+    The maximum number of pods that can be unavailable during the update.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    Absolute number is calculated from percentage by rounding down.
+    This can not be 0 if MaxSurge is 0.
+    Defaults to 25%.
+    Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods
+    immediately when the rolling update starts. Once new pods are ready, old ReplicaSet
+    can be scaled down further, followed by scaling up the new ReplicaSet, ensuring
+    that the total number of pods available at all times during the update is at
+    least 70% of desired pods.
+  path: webhook.strategy.rollingUpdate.maxUnavailable
+  required: false
+  type: object
+- description: |-
+    The maximum number of pods that can be scheduled above the desired number of
+    pods.
+    Value can be an absolute number (ex: 5) or a percentage of desired pods (ex: 10%).
+    This can not be 0 if MaxUnavailable is 0.
+    Absolute number is calculated from percentage by rounding up.
+    Defaults to 25%.
+    Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when
+    the rolling update starts, such that the total number of old and new pods do not exceed
+    130% of desired pods. Once old pods have been killed,
+    new ReplicaSet can be scaled up further, ensuring that total number of pods running
+    at any time during the update is at most 130% of desired pods.
+  path: webhook.strategy.rollingUpdate.maxSurge
+  required: false
+  type: object
+- default: {}
+  description: Node labels for pod assignment
+  path: webhook.nodeSelector
+  required: true
+  type: map[string]string
+- default: {}
+  description: Node affinity for pod assignment
+  path: webhook.affinity
+  required: true
+  type: object
+- default: []
+  description: Node tolerations for pod assignment
+  path: webhook.tolerations
+  required: true
+  type: '[]string'
+- default: quay.io/jetstack/cert-manager-webhook
+  description: Image repository
+  path: webhook.image.repository
+  required: true
+  type: string
+- description: |-
+    You can manage a registry with
+    Example:
+     registry: quay.io
+     repository: jetstack/cert-manager-controller
+  path: webhook.image.registry
+  required: false
+  type: string
+- description: |-
+    Override the image tag to deploy by setting this variable.
+    If no value is set, the chart's appVersion will be used.
+  path: webhook.image.tag
+  required: false
+  type: string
+- description: Setting a digest will override any tag
+  path: webhook.image.digest
+  required: false
+  type: string
+- default: IfNotPresent
+  description: Image pull policy
+  path: webhook.image.pullPolicy
+  required: false
+  type: string
+- default: {}
+  description: CPU/memory resource requests/limits for the pods
+  path: webhook.resources
+  required: true
+  type: object
+- default: []
+  description: Optional additional arguments for controller
+  path: webhook.extraArgs
+  required: true
+  type: '[]string'
+- default: []
+  description: Optional additional environment variables for controller
+  path: webhook.extraEnv
+  required: true
+  type: '[]object'
+- default: true
+  description: If `true`, create a new service account for the cert-manager controller
+  path: webhook.serviceAccount.create
+  required: true
+  type: boolean
+- description: |-
+    The name of the service account for the cert-manager controller to be used.
+    If not set and `serviceAccount.create` is `true`, a name is generated using
+    the fullname template
+  path: webhook.serviceAccount.name
+  required: false
+  type: string
+- description: Annotations to add to the service account for the cert-manager controller
+  path: webhook.serviceAccount.annotations
+  required: false
+  type: map[string]string
+- default: true
+  description: Automount API credentials for the cert-manager service account
+  path: webhook.serviceAccount.automountServiceAccountToken
+  required: true
+  type: boolean
+- default:
+    runAsNonRoot: true
+  description: |-
+    Pod Security Context
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: webhook.securityContext
+  required: true
+  type: object
+- default: {}
+  description: |-
+    Container Security Context to be set on the controller component container
+    ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  path: webhook.containerSecurityContext
+  required: true
+  type: object
+- default: 3
+  description: Minimum consecutive failures for the probe to be considered failed
+    after having succeeded.
+  path: webhook.livenessProbe.failureThreshold
+  required: true
+  type: integer
+- default: 60
+  description: |-
+    Number of seconds after the container has started before liveness probes are initiated.
+    ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+  path: webhook.livenessProbe.initialDelaySeconds
+  required: true
+  type: integer
+- default: 10
+  description: How often (in seconds) to perform the probe.
+  path: webhook.livenessProbe.periodSeconds
+  required: true
+  type: integer
+- default: 1
+  description: Minimum consecutive successes for the probe to be considered successful
+    after having failed.
+  path: webhook.livenessProbe.successThreshold
+  required: true
+  type: integer
+- default: 1
+  description: |-
+    Number of seconds after which the probe times out.
+    ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+  path: webhook.livenessProbe.timeoutSeconds
+  required: true
+  type: integer
+- default: 3
+  description: Minimum consecutive failures for the probe to be considered failed
+    after having succeeded.
+  path: webhook.readinessProbe.failureThreshold
+  required: true
+  type: integer
+- default: 5
+  description: |-
+    Number of seconds after the container has started before liveness probes are initiated.
+    ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+  path: webhook.readinessProbe.initialDelaySeconds
+  required: true
+  type: integer
+- default: 5
+  description: How often (in seconds) to perform the probe.
+  path: webhook.readinessProbe.periodSeconds
+  required: true
+  type: integer
+- default: 1
+  description: Minimum consecutive successes for the probe to be considered successful
+    after having failed.
+  path: webhook.readinessProbe.successThreshold
+  required: true
+  type: integer
+- default: 1
+  description: |-
+    Number of seconds after which the probe times out.
+    ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+  path: webhook.readinessProbe.timeoutSeconds
+  required: true
+  type: integer
+- default: 10250
+  description: |-
+    The port that the webhook should listen on for requests.
+    In GKE private clusters, by default kubernetes apiservers are allowed to
+    talk to the cluster nodes only on 443 and 10250. so configuring
+    securePort: 10250, will work out of the box without needing to add firewall
+    rules or requiring NET_BIND_SERVICE capabilities to bind port numbers <1000
+  path: webhook.securePort
+  required: true
+  type: integer
+- default: false
+  description: |-
+    Specifies if the webhook should be started in hostNetwork mode.
+
+    Required for use in some managed kubernetes clusters (such as AWS EKS) with custom
+    CNI (such as calico), because control-plane managed by AWS cannot communicate
+    with pods' IP CIDR and admission webhooks are not working
+
+    Since the default port for the webhook conflicts with kubelet on the host
+    network, `webhook.securePort` should be changed to an available port if
+    running in hostNetwork mode.
+  path: webhook.hostNetwork
+  required: true
+  type: boolean
+- default: ClusterIP
+  description: |-
+    The type of the `Service`.
+    Specifies how the service should be handled. Useful if you want to expose the
+    webhook to outside of the cluster. In some cases, the control plane cannot
+    reach internal services.
+  path: webhook.serviceType
+  required: true
+  type: string
+- description: The specific load balancer IP to use (when `serviceType` is `LoadBalancer`).
+  path: webhook.loadBalancerIP
+  required: false
+  type: string
+- default: 10
+  description: Seconds the API server should wait the webhook to respond before treating
+    the call as a failure.
+  path: webhook.timeoutSeconds
+  required: true
+  type: integer
+- path: webhook.url.host
+  required: false
+  type: string
+- description: Annotations to add to the webhook MutatingWebhookConfiguration
+  path: webhook.mutatingWebhookConfigurationAnnotations
+  required: false
+  type: map[string]string
+- description: Annotations to add to the webhook ValidatingWebhookConfiguration
+  path: webhook.validatingWebhookConfigurationAnnotations
+  required: false
+  type: map[string]string
+- default: ""
+  description: |-
+    Override the namespace used to store DNS provider credentials etc. for ClusterIssuer
+    resources. By default, the same namespace as cert-manager is deployed within is
+    used. This namespace will not be automatically created by the Helm chart.
+  path: clusterResourceNamespace
+  required: true
+  type: string
+- default: ""
+  description: Comma separated list of feature gates that should be enabled on the
+  path: featureGates
+  required: true
+  type: string
+- description: Value of the `HTTP_PROXY` environment variable in the cert-manager
+    pod
+  path: http_proxy
+  required: false
+  type: string
+- description: Value of the `HTTPS_PROXY` environment variable in the cert-manager
+    pod
+  path: https_proxy
+  required: false
+  type: string
+- description: Value of the `NO_PROXY` environment variable in the cert-manager pod
+  path: no_proxy
+  required: false
+  type: string
+- path: ingressShim
+  required: true
+  type: object
+- description: Optional cert-manager pod [DNS configurations](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pods-dns-config)
+  path: podDnsConfig
+  required: false
+  type: object
+- description: |-
+    Optional cert-manager pod [DNS policy](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pods-dns-policy)
+    Useful if you have a public and private DNS zone for
+    the same domain on Route 53. What follows is an example of ensuring
+    cert-manager can access an ingress or DNS TXT records at all times.
+    **NOTE:** This requires Kubernetes 1.10 or `CustomPodDNS` feature
+    gate enabled for the cluster to work.
+  path: podDnsPolicy
+  required: false
+  type: string
+- description: Labels to add to the cert-manager controller service
+  path: serviceLabels
+  required: false
+  type: map[string]string
+- default: []
+  description: Volume mounts to add to cert-manager
+  path: volumeMounts
+  required: true
+  type: '[]object'
+- default: []
+  description: Volumes to add to cert-manager
+  path: volumes
+  required: true
+  type: '[]object'
+- path: creator
+  required: false
+  type: string

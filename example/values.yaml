@@ -1,0 +1,104 @@
+affinity: {}
+cainjector:
+  affinity: {}
+  containerSecurityContext: {}
+  enabled: true
+  extraArgs: []
+  extraEnv: []
+  image:
+    pullPolicy: IfNotPresent
+    repository: quay.io/jetstack/cert-manager-cainjector
+  nodeSelector: {}
+  podLabels: null
+  replicaCount: 1
+  resources: {}
+  securityContext:
+    runAsNonRoot: true
+  serviceAccount:
+    automountServiceAccountToken: true
+    create: true
+  strategy:
+    rollingUpdate: {}
+  tolerations: []
+clusterResourceNamespace: ""
+containerSecurityContext: {}
+extraArgs: []
+extraEnv: []
+featureGates: ""
+global:
+  imagePullSecrets: []
+  leaderElection:
+    namespace: kube-system
+  logLevel: 2
+  podSecurityPolicy:
+    enabled: false
+    useAppArmor: true
+  priorityClassName: ""
+  rbac:
+    create: true
+image:
+  pullPolicy: IfNotPresent
+  repository: quay.io/jetstack/cert-manager-controller
+ingressShim: null
+installCRDs: false
+nodeSelector: {}
+podLabels: null
+prometheus:
+  enabled: false
+  servicemonitor:
+    enabled: false
+    interval: 60s
+    labels: {}
+    path: /metrics
+    prometheusInstance: default
+    scrapeTimeout: 30s
+    targetPort: 9402
+replicaCount: 1
+resources: {}
+securityContext:
+  runAsNonRoot: true
+serviceAccount:
+  automountServiceAccountToken: true
+  create: true
+strategy:
+  rollingUpdate: {}
+tolerations: []
+volumeMounts: []
+volumes: []
+webhook:
+  affinity: {}
+  containerSecurityContext: {}
+  extraArgs: []
+  extraEnv: []
+  hostNetwork: false
+  image:
+    pullPolicy: IfNotPresent
+    repository: quay.io/jetstack/cert-manager-webhook
+  livenessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  nodeSelector: {}
+  podLabels: null
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  replicaCount: 1
+  resources: {}
+  securePort: 10250
+  securityContext:
+    runAsNonRoot: true
+  serviceAccount:
+    automountServiceAccountToken: true
+    create: true
+  serviceType: ClusterIP
+  strategy:
+    rollingUpdate: {}
+  timeoutSeconds: 10
+  tolerations: []
+  url: {}
